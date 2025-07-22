@@ -1,6 +1,7 @@
 package com.woon7713.inventory_app.service;
 
 import com.woon7713.inventory_app.dto.StockDto;
+import com.woon7713.inventory_app.dto.StockResponseDto;
 import com.woon7713.inventory_app.dto.StockUpdateDto;
 import com.woon7713.inventory_app.model.Product;
 import com.woon7713.inventory_app.model.Stock;
@@ -27,8 +28,18 @@ public class StockService {
     private final WarehouseRepository warehouseRepository;
 
 
-    public List<Stock> search(StockSearchCondition condition) {
-        return queryRepository.search(condition);
+    public List<StockResponseDto> search(StockSearchCondition condition) {
+        List<Stock> stocks = queryRepository.search(condition);
+
+        return  stocks.stream()
+                .map((stock) -> new StockResponseDto(
+                        stock.getId(),
+                        stock.getQuantity(),
+                        stock.getProduct().getId(),
+                        stock.getProduct().getName(),
+                        stock.getWarehouse().getId(),
+                        stock.getWarehouse().getName()
+                )).toList();
     }
 
     public Stock getById(Long id) {
