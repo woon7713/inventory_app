@@ -1,5 +1,6 @@
 package com.woon7713.inventory_app.dto;
 
+import com.woon7713.inventory_app.model.Stock;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,4 +13,15 @@ public class StockResponseDto {
     private String productName;
     private Long warehouseId;
     private String warehouseName;
+
+    public static StockResponseDto fromEntity(Stock stock) {
+        return new StockResponseDto(
+                stock.getId(),
+                stock.getQuantity(),
+                stock.getProduct().getId(),
+                stock.getProduct().getName(),
+                stock.getWarehouse().getId(),
+                stock.getWarehouse().getName());
+    }
+
 }

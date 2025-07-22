@@ -31,17 +31,9 @@ public class StockService {
     public List<StockResponseDto> search(StockSearchCondition condition) {
         List<Stock> stocks = queryRepository.search(condition);
 
-        return  stocks.stream()
-                .map((stock) -> new StockResponseDto(
-                        stock.getId(),
-                        stock.getQuantity(),
-                        stock.getProduct().getId(),
-                        stock.getProduct().getName(),
-                        stock.getWarehouse().getId(),
-                        stock.getWarehouse().getName()
-                )).toList();
+        return stocks.stream()
+                .map(StockResponseDto::fromEntity).toList();
     }
-
     public Stock getById(Long id) {
         return stockRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("재고를 찾을 수 없습니다."));
